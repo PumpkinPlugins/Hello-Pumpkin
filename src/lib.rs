@@ -1,3 +1,5 @@
+use std::sync::Arc;
+
 use async_trait::async_trait;
 use pumpkin::plugin::{player::PlayerJoinEvent, Context, EventHandler, EventPriority};
 use pumpkin_api_macros::{plugin_impl, plugin_method, with_runtime};
@@ -22,7 +24,7 @@ async fn on_load(&mut self, server: &Context) -> Result<(), String> {
     log::info!("Hello, Pumpkin!");
 
     server
-        .register_event(MyJoinHandler, EventPriority::Lowest, true)
+        .register_event(Arc::new(MyJoinHandler), EventPriority::Lowest, true)
         .await;
 
     Ok(())
