@@ -19,7 +19,7 @@ impl EventHandler<PlayerJoinEvent> for MyJoinHandler {
 
 #[plugin_method]
 async fn on_load(&mut self, server: &Context) -> Result<(), String> {
-    env_logger::Builder::from_env(env_logger::Env::default().default_filter_or("info")).init();
+    pumpkin::init_log!();
 
     log::info!("Hello, Pumpkin!");
 
