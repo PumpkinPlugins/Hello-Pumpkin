@@ -1,7 +1,7 @@
 use std::sync::Arc;
 
 use async_trait::async_trait;
-use pumpkin::plugin::{player::PlayerJoinEvent, Context, EventHandler, EventPriority};
+use pumpkin::plugin::{player::player_join::PlayerJoinEvent, Context, EventHandler, EventPriority};
 use pumpkin_api_macros::{plugin_impl, plugin_method, with_runtime};
 use pumpkin_util::text::{color::NamedColor, TextComponent};
 
