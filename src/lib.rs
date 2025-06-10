@@ -10,8 +10,8 @@ use pumpkin::{
     server::Server,
 };
 use pumpkin_api_macros::{plugin_impl, plugin_method, with_runtime};
+use pumpkin_util::permission::{Permission, PermissionDefault};
 use pumpkin_util::text::{color::NamedColor, TextComponent};
-use pumpkin_util::PermissionLvl;
 use rand::{rng, Rng};
 
 struct MyJoinHandler;
@@ -97,7 +97,16 @@ async fn on_load(&mut self, server: &Context) -> Result<(), String> {
         .then(literal("paper").execute(RockPaperScissorsExecutor(Choice::Paper)))
         .then(literal("scissors").execute(RockPaperScissorsExecutor(Choice::Scissors)));
 
-    server.register_command(command, PermissionLvl::Zero).await;
+    let permission = Permission::new(
+        "hello_pumpkin:command.rockpaperscisors",
+        "Allows the player to play rock paper scisors",
+        PermissionDefault::Allow,
+    );
+
+    server.register_permission(permission).await?;
+    server
+        .register_command(command, "hello_pumpkin:command.rockpaperscisors")
+        .await;
 
     Ok(())
 }
