@@ -83,7 +83,7 @@ impl CommandExecutor for RockPaperScissorsExecutor {
 }
 
 #[plugin_method]
-async fn on_load(&mut self, server: &Context) -> Result<(), String> {
+async fn on_load(&mut self, server: Arc<Context>) -> Result<(), String> {
     pumpkin::init_log!();
 
     log::info!("Hello, Pumpkin!");
@@ -98,14 +98,14 @@ async fn on_load(&mut self, server: &Context) -> Result<(), String> {
         .then(literal("scissors").execute(RockPaperScissorsExecutor(Choice::Scissors)));
 
     let permission = Permission::new(
-        "hello_pumpkin:command.rockpaperscisors",
+        "hello-pumpkin:command.rockpaperscisors",
         "Allows the player to play rock paper scisors",
         PermissionDefault::Allow,
     );
 
     server.register_permission(permission).await?;
     server
-        .register_command(command, "hello_pumpkin:command.rockpaperscisors")
+        .register_command(command, "hello-pumpkin:command.rockpaperscisors")
         .await;
 
     Ok(())
