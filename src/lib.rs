@@ -1,25 +1,23 @@
 use std::sync::Arc;
 
-use async_trait::async_trait;
 use pumpkin::{
     command::{
-        args::ConsumedArgs,
-        tree::{builder::literal, CommandTree},
         CommandExecutor, CommandResult, CommandSender,
+        args::ConsumedArgs,
+        tree::{CommandTree, builder::literal},
     },
     plugin::{
-        player::player_join::PlayerJoinEvent, BoxFuture, Context, EventHandler, EventPriority,
+        BoxFuture, Context, EventHandler, EventPriority, player::player_join::PlayerJoinEvent,
     },
     server::Server,
 };
 use pumpkin_api_macros::{plugin_impl, plugin_method, with_runtime};
 use pumpkin_util::permission::{Permission, PermissionDefault};
-use pumpkin_util::text::{color::NamedColor, TextComponent};
-use rand::{rng, Rng};
+use pumpkin_util::text::{TextComponent, color::NamedColor};
+use rand::{RngExt, rng};
 
 struct MyJoinHandler;
 
-#[with_runtime(global)]
 impl EventHandler<PlayerJoinEvent> for MyJoinHandler {
     fn handle_blocking<'a>(
         &self,
@@ -39,7 +37,7 @@ const DESCRIPTION: &str = "Play Rock Paper Scissors with the server.";
 
 struct RockPaperScissorsExecutor(Choice);
 
-#[async_trait]
+#[with_runtime(global)]
 impl CommandExecutor for RockPaperScissorsExecutor {
     fn execute<'a>(
         &'a self,
@@ -89,7 +87,7 @@ impl CommandExecutor for RockPaperScissorsExecutor {
                 }
             }
 
-            Ok(())
+            Ok(1)
         })
     }
 }
@@ -98,7 +96,7 @@ impl CommandExecutor for RockPaperScissorsExecutor {
 async fn on_load(&mut self, server: Arc<Context>) -> Result<(), String> {
     server.init_log();
 
-    log::info!("Hello, Pumpkin!");
+    server.log("Hello, Pumpkin!");
 
     server
         .register_event(Arc::new(MyJoinHandler), EventPriority::Lowest, true)

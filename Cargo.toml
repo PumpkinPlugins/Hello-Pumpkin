@@ -1,7 +1,7 @@
 [package]
 name = "hello-pumpkin"
 version = "0.1.0"
-edition = "2021"
+edition = "2024"
 
 [lib]
 crate-type = ["cdylib"]
@@ -13,9 +13,10 @@ pumpkin-data = { git = "https://github.com/Pumpkin-MC/Pumpkin.git", branch = "ma
 pumpkin-protocol = { git = "https://github.com/Pumpkin-MC/Pumpkin.git", branch = "master", package = "pumpkin-protocol" }
 pumpkin-api-macros = { git = "https://github.com/Pumpkin-MC/Pumpkin.git", branch = "master", package = "pumpkin-api-macros" }
 
-async-trait = "0.1.83"
-tokio = { version = "1.42", features = ["full"] }
+tokio = { version = "1.49", features = ["full"] }
+rand = "0.10.0"
 
-env_logger = "0.11.6"
-log = "0.4.22"
-rand = "0.9.1"
+[profile.release]
+lto = true
+strip = "debuginfo"
+codegen-units = 1
